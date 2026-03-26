@@ -1,0 +1,66 @@
+.chat-feed {
+  display: flex;
+  flex-direction: column;
+  padding: 1.5rem;
+  gap: 1.5rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.scroll-anchor {
+  height: 1px;
+}
+
+.loading-bubble {
+  align-self: flex-start;
+  background-color: transparent;
+  padding: 1rem;
+  margin-left: 2.5rem;
+}
+
+.dot-typing {
+  position: relative;
+  left: -9999px;
+  width: 6px;
+  height: 6px;
+  border-radius: 5px;
+  background-color: var(--accent-color);
+  color: var(--accent-color);
+  box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  animation: dot-typing 1.5s infinite linear;
+}
+
+@keyframes dot-typing {
+  0% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+  16.667% {
+    box-shadow: 9984px -6px 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+  33.333% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+  50% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px -6px 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+  66.667% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+  83.333% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px -6px 0 0 var(--accent-color);
+  }
+  100% {
+    box-shadow: 9984px 0 0 0 var(--accent-color), 9999px 0 0 0 var(--accent-color), 10014px 0 0 0 var(--accent-color);
+  }
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .chat-feed {
+    padding: 1rem;
+    gap: 1rem;
+  }
+  .loading-bubble {
+    margin-left: 1.5rem;
+  }
+}
