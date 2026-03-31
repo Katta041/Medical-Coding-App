@@ -65,23 +65,34 @@ function App() {
     // We only send messages without the React-specific 'id' field to OpenAI
     const conversationHistory = [...currentMessages, newUserMsg].map(({ role, content, images }) => ({ role, content, images }));
     
-    pushMessage(prev => [...prev, newUserMsg]);
+    const assistantId = Date.now() + 1;
+
+    // Immediately push user message and an empty placeholder for the incoming AI stream
+    pushMessage(prev => [
+      ...prev, 
+      newUserMsg,
+      { id: assistantId, role: 'assistant', content: '' }
+    ]);
+    
     setIsLoading(true);
 
     try {
-      const responseContent = await getOpenAIResponse(conversationHistory, apiKey, activeTab);
-      pushMessage(prev => [...prev, {
-        id: Date.now() + 1,
-        role: 'assistant',
-        content: responseContent
-      }]);
+      await getOpenAIResponse(conversationHistory, apiKey, activeTab, (chunk) => {
+        setIsLoading(false); // Hide the loading spinner as soon as the first word trickles in
+        pushMessage(prev => prev.map(msg => 
+          msg.id === assistantId 
+            ? { ...msg, content: msg.content + chunk } 
+            : msg
+        ));
+      });
     } catch (error) {
       console.error(error);
-      pushMessage(prev => [...prev, {
-        id: Date.now() + 1,
-        role: 'assistant',
-        content: `**Error:** ${error.message}`
-      }]);
+      setIsLoading(false); // Ensure spinner hides on error
+      pushMessage(prev => prev.map(msg => 
+        msg.id === assistantId 
+          ? { ...msg, content: `**Error:** ${error.message}` } 
+          : msg
+      ));
     } finally {
       setIsLoading(false);
     }
